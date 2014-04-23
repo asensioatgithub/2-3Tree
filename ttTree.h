@@ -1,6 +1,8 @@
 #ifndef TTTREE_H
 #define TTTREE_H
 
+#include <stack>
+
 struct treeNode {
     
   int firstKey, secondKey;
@@ -28,9 +30,9 @@ class ttTree {
 
   bool isTwoNode(treeNode*);
 
-  treeNode* search(treeNode*, int);
+  std::stack<treeNode*> search(treeNode*, int);
 
-  int inOrder(TreeNode*);
+  int inOrder(treeNode*);
 
   treeNode* getRootNode();
 

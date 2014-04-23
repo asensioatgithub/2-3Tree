@@ -1,9 +1,25 @@
 #include <iostream>
+#include <stack>
+
 #include "ttTree.h"
 
 using namespace std;
 
+/*
+
+Private member variables
+
+*/
+
 struct treeNode *root;
+const int NULL_KEY = -1000;
+
+
+/*
+
+Public Methods
+
+*/
 
 ttTree::ttTree() {
 
@@ -26,9 +42,7 @@ int ttTree::ttTreeInsert(int key) {
 
   } else {
 
-    treeNode node = search(root, key);
-    
-    if (node 
+    stack<treeNode*> S = search(root, key);
 
   } // else
   
@@ -46,20 +60,21 @@ void ttTree::ttTreePrint(treeNode *root) {
 
   // prints contents of tree
   
-
-
 } // ttTreePrint
 
 
-//
-//
-//
-//
-// TEST METHODS
-//
-//
-//
-//
+
+
+
+/*
+
+Test Methods
+
+*/
+
+
+
+
 
 bool ttTree::isLeaf(treeNode *node) {
   // checks if the node is a leaf
@@ -79,7 +94,7 @@ bool ttTree::isLeaf(treeNode *node) {
 
 bool ttTree::isTwoNode(treeNode *node) {
 
-  if (node->secondKey == NULL) {
+  if (node->secondKey == NULL_KEY) {
 
     return true;
 
@@ -92,64 +107,63 @@ bool ttTree::isTwoNode(treeNode *node) {
 } // isTwoNode
 
 
-// treeNode* ttTree::search(treeNode *node, int key) {
+stack<treeNode*> ttTree::search(treeNode *node, int key) {
 
-//   if (isLeaf(node->left) && isLeaf(node->middle) && isLeaf(node->right)) {
+  // Searches the tree for the key and returns an 
+  // inorder stack of node pointers
 
-//     return node;
+  stack<treeNode*> s;
 
-//   } else {
+  while (node != NULL) {
 
-//     if (key <= node->firstKey) {
+    s.push(node);
 
-//       return search(node->left, key);
+    if (isTwoNode(node)) {
 
-//     } else if (key <= node->secondKey) {
+      if (key == node->firstKey) {
 
-//       return search(node->middle, key);
+	break;
 
-//     } else {
+      } else if (key < node->firstKey) {
 
-//       return search(node->right, key);
+	node = node->left;
 
-//     } // if else
+      } else {
 
-//   } // if
+	node = node->middle;
+	
+      } // if else
 
-// } // search
+    } else {
 
+      if ((key == node->firstKey) || (key == node->secondKey)) {
 
-treeNode* ttTree::search(treeNode *node, int key) {
+	break;
 
-  if (node == NULL) return NULL;
+      } else if (key < node->firstKey) {
 
-  if (isLeaf(node)) {
+	node = node->left;
+      
+      } else if (key < node->secondKey) {
 
-    
+	node = node->middle;
+ 
+      } else {
 
-  }
+	node = node->right;
 
+      } // if else
 
+    } // if else
+
+  } // while
+
+  return s;
 
 } // search
-
-
-int ttTree::inOrder(TreeNode *node) {
-
-  if (node != NULL) {
-
-    inOrder(node->left);
-    if (node->firstKey != NULL) return node->firstKey;
-    inOrder(node->middle);
-    if (node->secondKey != NULL) return node->secondKey;
-    inOrder(node->right);
-
-  } // if
-
-} // inOrder
 
 treeNode* ttTree::getRootNode() {
 
   return root;
 
-} // getRootNode
+} // getRootNode 
