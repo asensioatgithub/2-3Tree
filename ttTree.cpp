@@ -29,60 +29,200 @@ ttTree::ttTree() {
 
 ttTree::~ttTree() {} // ~ttTree
 
+
 int ttTree::ttTreeInsert(int key) {
 
-  // inserts node with value 'key'
-  // returns 1 if successful
-  // returns 0 if key already exists
-
-  if (root == NULL) { // empty tree
+  if (root == NULL) {
 
     root = new treeNode;
     root->firstKey = key;
-    
+
   } else {
 
-    stack<treeNode*> s = search(root, key);
-
+    stack<treeNode*> s = search(root,key);
+    
+    int dir = 0;
+    treeNode *nodeTemp1 = new treeNode;
+    treeNode *nodeTemp2 = new treeNode;
     treeNode *node = new treeNode;
 
-    if (!s.empty()) node = s.top();
-
+    node = s.top();
     s.pop();
 
-    // return 0 if key exists
     if ((node->firstKey == key) || (node->secondKey == key)) return 0;
 
-    while (s.size()) {
+    while (!s.empty()) {
 
-      if (isTwoNode(node)) {   // if the node is a 2-node
+	if (isLeaf(node)) {
+
+	  nodeTemp1 = NULL;
+	  nodeTemp2 = NULL;
+
+	} // if is leaf node
+
+	if (isTwoNode(node)) {
+
+	  node->firstKey = min(node->firstKey, key);
+	  node->secondKey = max(node->firstKey, key);
+
+	  switch (dir) {
+
+	  case 0:
+	    node->left = nodeTemp1;
+	    node->right = node->middle;
+	    node->middle = nodeTemp2;
+	  case 1:
+	    node->middle = nodeTemp1;
+	    node->right = nodeTemp2;
 	  
-	if (key < node->firstKey) {
+	  } // switch
 
-	  node->secondKey = node->firstKey;
-	  node->firstKey = key;
+	  break;
 
-	} else {
+	} else {  // current node is a 3 node
 
-	  node->secondKey = key;
+	  treeNode *node1 = new treeNode;
+	  treeNode *node2 = new treeNode;
+	  
+	  
+	  
 
-	} // if else
-	   
-      } else {  // if the node is a 3-node
 
-	treeNode *node1 = new treeNode;
-	treeNode *node2 = new treeNode;
-	
-	
-      } // if else
+
+
+	}
+
 
     } // while
 
-  } // if else
+  } // if tree is empty
 
-  return 1;
-  
+
+
+
+
+
 } // ttTreeInsert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// int ttTree::ttTreeInsert(int key) {
+
+//   // inserts node with value 'key'
+//   // returns 1 if successful
+//   // returns 0 if key already exists
+
+//   if (root == NULL) { // empty tree
+
+//     root = new treeNode;
+//     root->firstKey = key;
+    
+//   } else {
+
+//     stack<treeNode*> s = search(root, key);
+
+//     treeNode *node = new treeNode;
+//     treeNode *node1 = new treeNode;
+//     treeNode *node2 = new treeNode;
+//     treeNode *parent = new treeNode;
+
+//     if (!s.empty()) node = s.top();
+
+//     s.pop(); // removes top element of stack
+
+//     // return 0 if key exists
+//     if ((node->firstKey == key) || (node->secondKey == key)) return 0;
+
+//     while (!s.empty()) {
+
+//       if (isTwoNode(node)) {   // if the node is a 2-node
+
+// 	 if (key < node->firstKey) {
+
+// 	   node->secondKey = node->firstKey;
+// 	   node->firstKey = key;
+
+// 	 } else {
+
+// 	   node->secondKey = key;
+
+// 	 } // if else
+
+//        } else {  // if the node is a 3-node
+
+// 	   treeNode *nodeTemp1 = new treeNode;
+// 	   treeNode *nodeTemp2 = new treeNode;
+
+// 	   nodeTemp1 = node1;
+// 	   nodeTemp2 = node2;
+
+// 	   int temp = mid(node->firstKey,node->secondKey,key);
+
+// 	   node1->firstKey = min(node->firstKey,node->secondKey,key);
+// 	   node2->firstKey = max(node->firstKey,node->secondKey,key);
+
+// 	   parent = s.top();
+// 	   s.pop();
+
+// 	   if (isTwoNode(parent)) {
+
+// 	     if (parent->left == node) {
+
+// 	       parent->secondKey = parent->firstKey;
+// 	       parent->firstKey = temp;
+// 	       parent->left = node1;
+// 	       parent->right = parent->middle;
+// 	       parent->middle = node2;
+
+// 	     } else {
+
+// 	       parent->secondKey = temp;
+// 	       parent->middle = node1;
+// 	       parent->right = node2;
+
+// 	     } // if else
+
+// 	     break;
+
+// 	   } else {
+
+	   
+// 	   } // if else
+      
+//       } // if else
+
+//     } // while
+
+//   } // if else
+
+//   return 1;
+  
+// } // ttTreeInsert
+
+
 
 int ttTree::ttTreeDelete(int key) {
   // deletes node with 'key' value
