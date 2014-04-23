@@ -26,7 +26,11 @@ class ttTree {
 
   bool isLeaf(treeNode*);
 
+  bool isTwoNode(treeNode*);
+
   treeNode* search(treeNode*, int);
+
+  int inOrder(TreeNode*);
 
   treeNode* getRootNode();
 

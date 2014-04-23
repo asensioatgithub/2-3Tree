@@ -65,40 +65,76 @@ bool ttTree::isLeaf(treeNode *node) {
   // checks if the node is a leaf
 
   if (node->left == NULL && node->middle == NULL && node->right == NULL) {
+
     return true;
+
   } else {
+
     return false;
+
   } // if
 
 } // isLeaf
 
-treeNode* ttTree::search(treeNode *node, int key) {
 
-  if (isLeaf(node->left) && isLeaf(node->middle) && isLeaf(node->right)) {
+bool ttTree::isTwoNode(treeNode *node) {
 
-    return node;
+  if (node->secondKey == NULL) {
+
+    return true;
 
   } else {
-
-    if (key <= node->firstKey) {
-
-      return search(node->left, key);
-
-    } else if (key <= node->secondKey) {
-
-      return search(node->middle, key);
-
-    } else {
-
-      return search(node->right, key);
-
-    } // if else
+    
+    return false;
 
   } // if
 
+} // isTwoNode
+
+
+// treeNode* ttTree::search(treeNode *node, int key) {
+
+//   if (isLeaf(node->left) && isLeaf(node->middle) && isLeaf(node->right)) {
+
+//     return node;
+
+//   } else {
+
+//     if (key <= node->firstKey) {
+
+//       return search(node->left, key);
+
+//     } else if (key <= node->secondKey) {
+
+//       return search(node->middle, key);
+
+//     } else {
+
+//       return search(node->right, key);
+
+//     } // if else
+
+//   } // if
+
+// } // search
+
+
+treeNode* ttTree::search(treeNode *node, int key) {
+
+  if (node == NULL) return NULL;
+
+  if (isLeaf(node)) {
+
+    
+
+  }
+
+
+
 } // search
 
-int ttTree::inOrder(*node) {
+
+int ttTree::inOrder(TreeNode *node) {
 
   if (node != NULL) {
 
