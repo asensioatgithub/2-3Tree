@@ -36,6 +36,9 @@ class ttTree {
 
   treeNode* getRootNode();
 
+  int max(int,int,int);
+  int min(int,int,int);
+  int mid(int,int,int);
 }; // ttTree
 
 #endif

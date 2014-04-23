@@ -39,12 +39,48 @@ int ttTree::ttTreeInsert(int key) {
 
     root = new treeNode;
     root->firstKey = key;
-
+    
   } else {
 
-    stack<treeNode*> S = search(root, key);
+    stack<treeNode*> s = search(root, key);
 
-  } // else
+    treeNode *node = new treeNode;
+
+    if (!s.empty()) node = s.top();
+
+    s.pop();
+
+    // return 0 if key exists
+    if ((node->firstKey == key) || (node->secondKey == key)) return 0;
+
+    while (s.size()) {
+
+      if (isTwoNode(node)) {   // if the node is a 2-node
+	  
+	if (key < node->firstKey) {
+
+	  node->secondKey = node->firstKey;
+	  node->firstKey = key;
+
+	} else {
+
+	  node->secondKey = key;
+
+	} // if else
+	   
+      } else {  // if the node is a 3-node
+
+	treeNode *node1 = new treeNode;
+	treeNode *node2 = new treeNode;
+	
+	
+      } // if else
+
+    } // while
+
+  } // if else
+
+  return 1;
   
 } // ttTreeInsert
 
@@ -167,3 +203,36 @@ treeNode* ttTree::getRootNode() {
   return root;
 
 } // getRootNode 
+
+
+int ttTree::max(int x, int y, int z) {
+
+  int max = x;
+
+  if (y > max) max = y;
+  if (z > max) max = z;
+  return max;
+
+} // max
+
+int ttTree::min(int x, int y, int z) {
+
+  int min = x;
+
+  if (y < min) min = y;
+  if (z < min) min = z;
+  return min;
+
+} // min
+
+
+int ttTree::mid(int x, int y, int z) {
+  
+  int mid = 0;
+
+  if ((z < x && y > x) || (y < x && z > x)) mid = x;
+  if ((x < y && z > y) || (z < y && x > y)) mid = y;
+  if ((y < z && x > z) || (x < z && y > z)) mid = z;
+  return mid;
+
+} // mid
