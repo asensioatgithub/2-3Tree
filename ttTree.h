@@ -6,7 +6,7 @@
 struct treeNode {
     
   int firstKey, secondKey;
-  treeNode *left, *middle, *right, *parent;
+  treeNode *left, *middle, *right, *temp;
     
 }; // treeNode
 
@@ -36,9 +36,9 @@ class ttTree {
 
   treeNode* getRootNode();
 
-  int max(int,int,int);
-  int min(int,int,int);
-  int mid(int,int,int);
+  int maximum(int,int,int);
+  int minimum(int,int,int);
+  int middle(int,int,int);
 }; // ttTree
 
 #endif

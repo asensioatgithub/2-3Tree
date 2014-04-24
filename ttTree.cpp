@@ -37,70 +37,137 @@ int ttTree::ttTreeInsert(int key) {
     root = new treeNode;
     root->firstKey = key;
 
+    cout << "first insert" << endl;
+
   } else {
 
     stack<treeNode*> s = search(root,key);
+
+    stack<treeNode*> butts(s);
+    
+    while (!butts.empty()) {
+
+      cout << butts.top() << endl;
+      butts.pop();
+
+    } // while
     
     int dir = 0;
-    treeNode *nodeTemp1 = new treeNode;
-    treeNode *nodeTemp2 = new treeNode;
-    treeNode *node = new treeNode;
+    struct treeNode *node = new treeNode;
 
     node = s.top();
     s.pop();
 
     if ((node->firstKey == key) || (node->secondKey == key)) return 0;
 
-    while (!s.empty()) {
+    int count = 0;
 
-	if (isLeaf(node)) {
+    while (count < (s.size() + 1)) {
 
-	  nodeTemp1 = NULL;
-	  nodeTemp2 = NULL;
+      struct treeNode *node1 = new treeNode;
+      struct treeNode *node2 = new treeNode;
+      struct treeNode *parent = new treeNode;
 
-	} // if is leaf node
+      node1->firstKey = minimum(node->firstKey, node->secondKey, key);
+      node2->firstKey = maximum(node->firstKey, node->secondKey, key);
+      int temp = middle(node->firstKey, node->secondKey, key);
 
-	if (isTwoNode(node)) {
+      if (!s.empty()) {
+	
+	parent = s.top();
+	s.pop();
+	
+      } //if
 
-	  node->firstKey = min(node->firstKey, key);
-	  node->secondKey = max(node->firstKey, key);
+      if (isTwoNode(node)) {
 
-	  switch (dir) {
+	cout << "isTwoNode(node)" << endl;
+
+	node->firstKey = min(node->firstKey, key);
+	node->secondKey = max(node->firstKey, key);
+	break;
+
+      } else {  // current node is a 3 node
+
+ 
+	if (node == parent->left) dir = 0;
+	if (node == parent->middle) dir = 1;
+	if (node == parent->right) dir = 2;
+
+	if (isTwoNode(parent)) {
+
+	  cout << "isTwoNode(parent)" << endl;
+
+	  switch(dir) {
 
 	  case 0:
-	    node->left = nodeTemp1;
-	    node->right = node->middle;
-	    node->middle = nodeTemp2;
+	    
+	    parent->secondKey = parent->firstKey;
+	    parent->firstKey = temp;
+	    parent->left = node1;
+	    parent->right = parent->middle;
+	    parent->middle = node2;
+	    break;
+	    
 	  case 1:
-	    node->middle = nodeTemp1;
-	    node->right = nodeTemp2;
-	  
+	    
+	    parent->secondKey = temp;
+	    parent->middle = node1;
+	    parent->right = node2;
+	    break;
+	    
 	  } // switch
-
-	  break;
-
-	} else {  // current node is a 3 node
-
-	  treeNode *node1 = new treeNode;
-	  treeNode *node2 = new treeNode;
 	  
+	} else if (s.empty()) {
+
+	  cout << "root node!" << endl;
+
+	  treeNode *newRoot = new treeNode;
+	  newRoot->firstKey = temp;
+	  newRoot->left = node1;
+	  newRoot->middle = node2;
+	  root = newRoot;
+
+	} else {
+
+	  cout << "isThreeNode(parent)" << endl;
+
+	  switch(dir) {
+
+	  case 0:
+	    
+	    parent->temp = parent->right;
+	    parent->right = parent->middle;
+	    parent->middle = node2;
+	    parent->left = node1;
+	    break;
 	  
+	  case 1:
+	    
+	    parent->temp = parent->right;
+	    parent->right = node2;
+	    parent->middle = node1;
+	    break;
+	    
+	  case 2:
+	    
+	    parent->right = node1;
+	    parent->temp = node2;
+	    break;
+	    
+	  } // switch
 	  
+	} // if else
 
+      } // else
 
-
-
-	}
-
+      key = temp;
+      node = parent;
+      count++;
 
     } // while
 
   } // if tree is empty
-
-
-
-
-
 
 } // ttTreeInsert
 
@@ -334,6 +401,8 @@ stack<treeNode*> ttTree::search(treeNode *node, int key) {
 
   } // while
 
+  cout << "search works!" << endl;
+
   return s;
 
 } // search
@@ -345,7 +414,7 @@ treeNode* ttTree::getRootNode() {
 } // getRootNode 
 
 
-int ttTree::max(int x, int y, int z) {
+int ttTree::maximum(int x, int y, int z) {
 
   int max = x;
 
@@ -355,7 +424,7 @@ int ttTree::max(int x, int y, int z) {
 
 } // max
 
-int ttTree::min(int x, int y, int z) {
+int ttTree::minimum(int x, int y, int z) {
 
   int min = x;
 
@@ -366,7 +435,7 @@ int ttTree::min(int x, int y, int z) {
 } // min
 
 
-int ttTree::mid(int x, int y, int z) {
+int ttTree::middle(int x, int y, int z) {
   
   int mid = 0;
 
